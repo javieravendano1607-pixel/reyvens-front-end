@@ -1,0 +1,7 @@
+[
+  { "id": "quick_01", "name": "Catálogo", "icon": "ShoppingBag", "color": "bg-primary-100 text-primary-700", "link": "/categories" },
+  { "id": "quick_02", "name": "Recompensas", "icon": "Gift", "color": "bg-surface-200 text-surface-700", "link": "/rewards" },
+  { "id": "quick_03", "name": "Carrito", "icon": "ShoppingCart", "color": "bg-gold-100 text-gold-700", "link": "/cart" },
+  { "id": "quick_04", "name": "Historial", "icon": "History", "color": "bg-primary-100 text-primary-700", "link": "/history" },
+  { "id": "quick_05", "name": "Billetera", "icon": "Wallet", "color": "bg-surface-200 text-surface-700", "link": "/wallet" }
+]

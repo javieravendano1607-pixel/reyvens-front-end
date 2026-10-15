@@ -1,0 +1,16 @@
+{
+  "name": "REYVENS - Marketplace Local & Lealtad",
+  "short_name": "REYVENS",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#D32F2F",
+  "description": "El marketplace local de e-commerce y lealtad.",
+  "icons": [
+    {
+      "src": "/icons/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}

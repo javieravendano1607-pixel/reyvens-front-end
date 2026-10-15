@@ -1,0 +1,92 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --safe-area-inset-bottom: env(safe-area-inset-bottom);
+    --safe-area-inset-top: env(safe-area-inset-top);
+    --safe-area-inset-left: env(safe-area-inset-left);
+    --safe-area-inset-right: env(safe-area-inset-right);
+  }
+
+  * {
+    @apply border-none outline-none;
+  }
+
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply bg-surface-50 text-surface-900 antialiased;
+    font-family: "Inter", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  #root {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.2);
+  }
+
+  .swiper {
+    overflow: visible;
+  }
+
+  .swiper-slide {
+    background: transparent;
+  }
+
+  .swiper-pagination-bullet {
+    @apply bg-surface-300 opacity-60;
+  }
+
+  .swiper-pagination-bullet-active {
+    @apply bg-primary-600 opacity-100;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply flex h-10 items-center justify-center gap-2 rounded-lg bg-primary-600 px-4 py-2 text-sm font-semibold text-white shadow-md transition-all duration-200 hover:bg-primary-700 hover:shadow-lg active:scale-95;
+  }
+
+  .btn-outline {
+    @apply flex h-10 items-center justify-center gap-2 rounded-lg border border-primary-600 px-4 py-2 text-sm font-semibold text-primary-600 transition-all duration-200 hover:bg-primary-50 active:scale-95;
+  }
+
+  .btn-ghost {
+    @apply flex h-10 items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium text-surface-600 transition-colors duration-200 hover:bg-surface-100 active:scale-95;
+  }
+
+  .card-surface {
+    @apply rounded-2xl bg-white p-4 shadow-sm;
+  }
+
+  .badge-points {
+    @apply inline-flex items-center gap-1 rounded-full bg-gold-400 px-2.5 py-0.5 text-xs font-bold text-white;
+  }
+}

@@ -1,0 +1,22 @@
+[
+  {
+    "id": "banner_01",
+    "title": "Compra local",
+    "subtitle": "Explora los productos publicados en REYVENS",
+    "cta": "Ver catálogo",
+    "bgColor": "from-primary-600 to-primary-700",
+    "textColor": "text-white",
+    "image": "https://images.unsplash.com/photo-1441986180142-3f1c4c2b3b77?w=400&auto=format&fit=crop",
+    "link": "/categories"
+  },
+  {
+    "id": "banner_02",
+    "title": "Novedades locales",
+    "subtitle": "Encuentra productos de tiendas cercanas",
+    "cta": "Ver catálogo",
+    "bgColor": "from-gold-400 to-gold-500",
+    "textColor": "text-white",
+    "image": "https://images.unsplash.com/photo-1571115774438-188999308473?w=400&auto=format&fit=crop",
+    "link": "/categories"
+  }
+]
