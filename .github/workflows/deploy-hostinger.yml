@@ -39,6 +39,8 @@ jobs:
         run: npm run lint
 
       - name: Build production site
+        env:
+          VITE_API_BASE_URL: https://api.reyvens.com/api/v1
         run: npm run build
 
       - name: Verify static build

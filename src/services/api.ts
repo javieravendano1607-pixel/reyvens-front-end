@@ -24,7 +24,7 @@ interface ApiEnvelope<T> {
 }
 
 const configuredBaseUrl = import.meta.env.VITE_API_BASE_URL?.trim();
-const productionApiBaseUrl = "https://orchid-llama-357344.hostingersite.com/api/v1";
+const productionApiBaseUrl = "https://api.reyvens.com/api/v1";
 const apiBaseUrl = (configuredBaseUrl || (import.meta.env.PROD ? productionApiBaseUrl : undefined))?.replace(/\/$/, "");
 let accessToken: string | null = null;
 let refreshRequest: Promise<string | null> | null = null;
