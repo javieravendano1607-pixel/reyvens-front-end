@@ -1,0 +1,91 @@
+name: Build and manually deploy REYVENS to Hostinger
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm_deploy:
+        description: "Confirmo que autorizo publicar este build en reyvens.com"
+        required: true
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Validate and build frontend
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4.2.2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4.4.0
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Type-check
+        run: npm run type-check
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build production site
+        run: npm run build
+
+      - name: Verify static build
+        shell: bash
+        run: |
+          test -s dist/index.html
+          ! grep -q '/src/main.tsx' dist/index.html
+          grep -Eq '(src|href)="/assets/[^\"]+"' dist/index.html
+          test -s dist/.htaccess
+
+      - name: Publish dist contents over verified SSH
+        if: ${{ inputs.confirm_deploy == true && github.ref == 'refs/heads/main' }}
+        shell: bash
+        env:
+          HOSTINGER_HOST: ${{ secrets.HOSTINGER_HOST }}
+          HOSTINGER_PORT: ${{ secrets.HOSTINGER_PORT }}
+          HOSTINGER_USER: ${{ secrets.HOSTINGER_USER }}
+          HOSTINGER_SSH_KEY: ${{ secrets.HOSTINGER_SSH_KEY }}
+          HOSTINGER_KNOWN_HOSTS: ${{ secrets.HOSTINGER_KNOWN_HOSTS }}
+        run: |
+          set -euo pipefail
+
+          : "${HOSTINGER_HOST:?Missing HOSTINGER_HOST secret}"
+          : "${HOSTINGER_PORT:?Missing HOSTINGER_PORT secret}"
+          : "${HOSTINGER_USER:?Missing HOSTINGER_USER secret}"
+          : "${HOSTINGER_SSH_KEY:?Missing HOSTINGER_SSH_KEY secret}"
+          : "${HOSTINGER_KNOWN_HOSTS:?Missing HOSTINGER_KNOWN_HOSTS secret}"
+
+          ssh_dir="$HOME/.ssh"
+          mkdir -p "$ssh_dir"
+          chmod 700 "$ssh_dir"
+          printf '%s\n' "$HOSTINGER_SSH_KEY" > "$ssh_dir/hostinger_deploy_key"
+          printf '%s\n' "$HOSTINGER_KNOWN_HOSTS" > "$ssh_dir/known_hosts"
+          chmod 600 "$ssh_dir/hostinger_deploy_key" "$ssh_dir/known_hosts"
+
+          # Port-aware lookup ensures the supplied pin covers this exact endpoint.
+          ssh-keygen -F "[$HOSTINGER_HOST]:$HOSTINGER_PORT" -f "$ssh_dir/known_hosts" >/dev/null
+
+          ssh_args=(
+            -i "$ssh_dir/hostinger_deploy_key"
+            -p "$HOSTINGER_PORT"
+            -o BatchMode=yes
+            -o IdentitiesOnly=yes
+            -o StrictHostKeyChecking=yes
+            -o "UserKnownHostsFile=$ssh_dir/known_hosts"
+          )
+          destination="$HOSTINGER_USER@$HOSTINGER_HOST"
+          remote_root="/home/u330624419/domains/reyvens.com/public_html"
+
+          # Upload only dist's contents. Extraction overwrites same-named files
+          # but does not delete any other remote files.
+          ssh "${ssh_args[@]}" "$destination" "mkdir -p '$remote_root'"
+          tar -C dist -czf - . | ssh "${ssh_args[@]}" "$destination" "tar -xzf - --no-same-owner -C '$remote_root'"

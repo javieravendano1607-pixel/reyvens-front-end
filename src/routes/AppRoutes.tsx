@@ -15,6 +15,8 @@ import { Search } from "../pages/Search";
 import { Login } from "../pages/auth/Login";
 import { Welcome } from "../pages/auth/Welcome";
 import { Location } from "../pages/auth/Location";
+import { GoogleLoginCallback } from "../pages/auth/GoogleLoginCallback";
+import { AccountSecurity } from "../pages/account/AccountSecurity";
 import type { ReactNode } from "react";
 
 function RequireAuth({ children }: { children: ReactNode }) {
@@ -40,6 +42,7 @@ export function AppRoutes() {
       <Route path="/login" element={<PublicOnly><Login /></PublicOnly>} />
       <Route path="/welcome" element={<Welcome />} />
       <Route path="/location" element={<Location />} />
+      <Route path="/auth/google/callback" element={<GoogleLoginCallback />} />
     </Route>
     <Route element={<MainLayout />}>
       <Route index element={<Home />} />
@@ -52,6 +55,7 @@ export function AppRoutes() {
       <Route path="/history" element={protectedPage(<History />)} />
       <Route path="/receipt/:id" element={protectedPage(<Receipt />)} />
       <Route path="/wallet" element={protectedPage(<Wallet />)} />
+      <Route path="/account/security" element={protectedPage(<AccountSecurity />)} />
       <Route path="/search" element={<Search />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Route>

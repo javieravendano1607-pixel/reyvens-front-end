@@ -24,7 +24,8 @@ interface ApiEnvelope<T> {
 }
 
 const configuredBaseUrl = import.meta.env.VITE_API_BASE_URL?.trim();
-const apiBaseUrl = configuredBaseUrl?.replace(/\/$/, "");
+const productionApiBaseUrl = "https://orchid-llama-357344.hostingersite.com/api/v1";
+const apiBaseUrl = (configuredBaseUrl || (import.meta.env.PROD ? productionApiBaseUrl : undefined))?.replace(/\/$/, "");
 let accessToken: string | null = null;
 let refreshRequest: Promise<string | null> | null = null;
 const sessionExpiredListeners = new Set<() => void>();
@@ -36,6 +37,10 @@ export function setAccessToken(token: string | null): void {
 
 export function getAccessToken(): string | null {
   return accessToken;
+}
+
+export function apiUrl(path: string): string {
+  return urlFor(path);
 }
 
 export function onSessionExpired(listener: () => void): () => void {

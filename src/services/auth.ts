@@ -1,4 +1,4 @@
-import { api, setAccessToken } from "./api";
+import { api, apiUrl, setAccessToken } from "./api";
 
 export interface ApiUser {
   id: string;
@@ -14,7 +14,28 @@ interface AuthTokensResponse {
   accessToken: string;
 }
 
+export interface GoogleLinkStatus {
+  enabled: boolean;
+  linked: boolean;
+}
+
 export const authApi = {
+  async googleLoginEnabled(): Promise<boolean> {
+    const result = await api.get<{ enabled: boolean }>("/auth/google/status");
+    return result.enabled;
+  },
+  googleLoginUrl(returnTo?: string): string {
+    const url = new URL(apiUrl("/auth/google"));
+    if (returnTo) url.searchParams.set("returnTo", returnTo);
+    return url.toString();
+  },
+  async googleLinkStatus(signal?: AbortSignal): Promise<GoogleLinkStatus> {
+    return api.get<GoogleLinkStatus>("/auth/google/link/status", signal);
+  },
+  async startGoogleLink(returnTo: string): Promise<string> {
+    const result = await api.post<{ authorizationUrl: string }>("/auth/google/link", { returnTo });
+    return result.authorizationUrl;
+  },
   async login(email: string, password: string): Promise<ApiUser> {
     const result = await api.post<AuthTokensResponse>("/auth/login", { email, password });
     setAccessToken(result.accessToken);
