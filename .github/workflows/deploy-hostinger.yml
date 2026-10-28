@@ -1,6 +1,9 @@
 name: Build and manually deploy REYVENS to Hostinger
 
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
     inputs:
       confirm_deploy:
@@ -47,7 +50,7 @@ jobs:
           test -s dist/.htaccess
 
       - name: Publish dist contents over verified SSH
-        if: ${{ inputs.confirm_deploy == true && github.ref == 'refs/heads/main' }}
+        if: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'workflow_dispatch' && inputs.confirm_deploy == true && github.ref == 'refs/heads/main') }}
         shell: bash
         env:
           HOSTINGER_HOST: ${{ secrets.HOSTINGER_HOST }}
