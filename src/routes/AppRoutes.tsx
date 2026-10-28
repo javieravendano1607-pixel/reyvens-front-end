@@ -18,18 +18,19 @@ import { Location } from "../pages/auth/Location";
 import { GoogleLoginCallback } from "../pages/auth/GoogleLoginCallback";
 import { AccountSecurity } from "../pages/account/AccountSecurity";
 import type { ReactNode } from "react";
+import { SessionSkeleton } from "../components/common/LoadingPatterns";
 
 function RequireAuth({ children }: { children: ReactNode }) {
   const { isAuthenticated, isLoading } = useAuth();
   const location = useLocation();
-  if (isLoading) return <div role="status" className="p-8 text-center text-sm text-surface-500">Verificando sesión…</div>;
+  if (isLoading) return <SessionSkeleton />;
   if (!isAuthenticated) return <Navigate to="/login" replace state={{ from: location.pathname }} />;
   return <>{children}</>;
 }
 
 function PublicOnly({ children }: { children: ReactNode }) {
   const { isAuthenticated, isLoading } = useAuth();
-  if (isLoading) return <div role="status" className="p-8 text-center text-sm text-surface-500">Verificando sesión…</div>;
+  if (isLoading) return <SessionSkeleton />;
   if (isAuthenticated) return <Navigate to="/" replace />;
   return <>{children}</>;
 }

@@ -57,6 +57,7 @@ function productFromSummary(dto: ProductDto): Product {
   return {
     id: dto.id,
     slug: dto.slug,
+    categoryId: dto.category_id,
     name: dto.name,
     description: dto.description ?? "",
     price,
@@ -97,8 +98,8 @@ export const marketplaceApi = {
     return products.filter(product => product.status === "active").map(productFromSummary);
   },
 
-  async product(slug: string): Promise<Product> {
-    const detail = await api.get<ProductDetailDto>(`/products/${encodeURIComponent(slug)}`);
+  async product(slug: string, signal?: AbortSignal): Promise<Product> {
+    const detail = await api.get<ProductDetailDto>(`/products/${encodeURIComponent(slug)}`, signal);
     const images = detail.product.images.map(image => image.url).filter(Boolean);
     const activeVariants = detail.variants.filter(variant => variant.status === "active");
     const trackedStocks = activeVariants

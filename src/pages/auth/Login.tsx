@@ -2,6 +2,7 @@ import { FC, FormEvent, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Logo } from "../../components/common/Logo";
 import { Button } from "../../components/ui/Button";
+import { Icon } from "../../components/ui/Icon";
 import { useAuth } from "../../contexts/AuthContext";
 import { authApi } from "../../services/auth";
 import { userMessageFor } from "../../services/api";
@@ -61,51 +62,48 @@ export const Login: FC = () => {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-6 px-4 py-8">
-      <Logo size="lg" />
-      <div className="w-full max-w-sm">
-        <h1 className="mb-4 text-center text-xl font-bold text-surface-900">
+    <div className="mx-auto grid min-h-[calc(100dvh-8rem)] w-full max-w-6xl content-center gap-8 px-4 py-8 sm:px-6 md:grid-cols-2 md:items-center md:gap-12 lg:gap-20">
+      <section className="hidden md:block">
+        <Logo size="lg" />
+        <p className="mt-8 text-sm font-semibold uppercase tracking-[0.16em] text-primary-800">Marketplace local</p>
+        <h1 className="mt-2 max-w-md text-4xl font-bold leading-tight tracking-tight text-surface-900">Lo que buscas, en REYVENS.</h1>
+        <p className="mt-4 max-w-md text-base leading-7 text-surface-600">Explora productos publicados por tiendas locales y gestiona tus compras desde un solo lugar.</p>
+        <div className="mt-8 h-1 w-16 rounded-full bg-primary-700" />
+      </section>
+
+      <section className="surface-card mx-auto w-full max-w-lg p-5 sm:p-8">
+        <div className="mb-6 md:hidden"><Logo size="md" /></div>
+        <p className="text-sm font-semibold uppercase tracking-[0.12em] text-primary-800">Tu cuenta REYVENS</p>
+        <h2 className="mt-1 text-2xl font-bold tracking-tight text-surface-900">
           {mode === "login" ? "Inicia sesión" : mode === "register" ? "Crear cuenta" : "Recuperar contraseña"}
-        </h1>
-        {mode === "login" && <div className="mb-4 space-y-3">
-          <Button
-            variant="outline"
-            size="lg"
-            fullWidth
-            leftIcon={<GoogleMark />}
-            onClick={startGoogleLogin}
-            disabled={googleChecking || !googleEnabled || submitting}
-          >
+        </h2>
+        <p className="mt-2 text-sm text-surface-600">{mode === "login" ? "Accede para continuar con tus compras." : mode === "register" ? "Completa tus datos para registrarte." : "Te enviaremos instrucciones si la cuenta existe."}</p>
+
+        {mode === "login" && <div className="mt-6">
+          <Button variant="outline" size="lg" fullWidth leftIcon={<GoogleMark />} onClick={startGoogleLogin} disabled={googleChecking || !googleEnabled || submitting}>
             {googleChecking ? "Comprobando Google…" : googleEnabled ? "Continuar con Google" : "Google no está disponible"}
           </Button>
-          {!googleChecking && !googleEnabled && <p className="text-center text-xs text-surface-500">El inicio con Google no está configurado.</p>}
-          <div className="flex items-center gap-3 text-xs text-surface-400"><span className="h-px flex-1 bg-surface-200" />o con correo<span className="h-px flex-1 bg-surface-200" /></div>
+          {!googleChecking && !googleEnabled && <p className="mt-2 text-center text-xs text-surface-500">El inicio con Google no está configurado.</p>}
+          <div className="my-5 flex items-center gap-3 text-xs text-surface-500"><span className="h-px flex-1 bg-surface-200" />o continúa con tu correo<span className="h-px flex-1 bg-surface-200" /></div>
         </div>}
-        <form onSubmit={handleSubmit} className="space-y-3">
-          {mode === "register" && (
-            <input required minLength={2} maxLength={150} autoComplete="name" value={name} onChange={event => setName(event.target.value)} placeholder="Nombre completo" className="w-full rounded-xl border border-surface-300 px-4 py-3 text-sm" />
-          )}
-          <input required type="email" autoComplete="email" value={email} onChange={event => setEmail(event.target.value)} placeholder="Correo electrónico" className="w-full rounded-xl border border-surface-300 px-4 py-3 text-sm" />
-          {mode === "register" && (
-            <input type="tel" autoComplete="tel" value={phone} onChange={event => setPhone(event.target.value)} placeholder="Teléfono (opcional)" className="w-full rounded-xl border border-surface-300 px-4 py-3 text-sm" />
-          )}
-          {mode !== "forgot" && (
-            <input required type="password" minLength={mode === "register" ? 8 : 1} maxLength={128} autoComplete={mode === "register" ? "new-password" : "current-password"} value={password} onChange={event => setPassword(event.target.value)} placeholder="Contraseña" className="w-full rounded-xl border border-surface-300 px-4 py-3 text-sm" />
-          )}
-          {error && <p role="alert" className="text-sm text-primary-700">{error}</p>}
-          {message && <p role="status" className="text-sm text-green-700">{message}</p>}
-          <Button type="submit" variant="primary" fullWidth size="lg" disabled={isLoading || submitting}>
-            {isLoading || submitting ? "Procesando..." : mode === "login" ? "Iniciar sesión" : mode === "register" ? "Crear cuenta" : "Enviar instrucciones"}
-          </Button>
+
+        <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+          {mode === "register" && <div><label htmlFor="auth-name" className="mb-1.5 block text-sm font-medium text-surface-800">Nombre completo</label><input id="auth-name" required minLength={2} maxLength={150} autoComplete="name" value={name} onChange={event => setName(event.target.value)} placeholder="Nombre completo" className="form-field" /></div>}
+          <div><label htmlFor="auth-email" className="mb-1.5 block text-sm font-medium text-surface-800">Correo electrónico</label><input id="auth-email" required type="email" autoComplete="email" value={email} onChange={event => setEmail(event.target.value)} placeholder="nombre@correo.com" className="form-field" /></div>
+          {mode === "register" && <div><label htmlFor="auth-phone" className="mb-1.5 block text-sm font-medium text-surface-800">Teléfono <span className="font-normal text-surface-500">(opcional)</span></label><input id="auth-phone" type="tel" autoComplete="tel" value={phone} onChange={event => setPhone(event.target.value)} placeholder="Teléfono" className="form-field" /></div>}
+          {mode !== "forgot" && <div><label htmlFor="auth-password" className="mb-1.5 block text-sm font-medium text-surface-800">Contraseña</label><input id="auth-password" required type="password" minLength={mode === "register" ? 8 : 1} maxLength={128} autoComplete={mode === "register" ? "new-password" : "current-password"} value={password} onChange={event => setPassword(event.target.value)} placeholder="Contraseña" className="form-field" /></div>}
+          {error && <p role="alert" className="rounded-xl border border-primary-200 bg-primary-50 p-3 text-sm text-primary-900">{error}</p>}
+          {message && <p role="status" className="rounded-xl border border-surface-300 bg-surface-50 p-3 text-sm text-surface-800">{message}</p>}
+          <Button type="submit" variant="primary" fullWidth size="lg" disabled={isLoading || submitting}>{isLoading || submitting ? "Procesando…" : mode === "login" ? "Iniciar sesión" : mode === "register" ? "Crear cuenta" : "Enviar instrucciones"}</Button>
         </form>
-        <div className="mt-4 flex flex-wrap justify-center gap-x-4 gap-y-2 text-sm">
-          {mode === "login" && <button type="button" onClick={() => setMode("forgot")} className="text-primary-700 underline">Olvidé mi contraseña</button>}
-          {mode !== "register" && <button type="button" onClick={() => { setMode("register"); setError(""); setMessage(""); }} className="text-primary-700 underline">Crear cuenta</button>}
-          {mode !== "login" && <button type="button" onClick={() => { setMode("login"); setError(""); setMessage(""); }} className="text-primary-700 underline">Volver a iniciar sesión</button>}
+
+        <div className="mt-5 flex flex-wrap gap-x-4 gap-y-2 text-sm">
+          {mode === "login" && <button type="button" onClick={() => setMode("forgot")} className="min-h-10 rounded-lg px-1 font-medium text-primary-800 underline underline-offset-2">Olvidé mi contraseña</button>}
+          {mode !== "register" && <button type="button" onClick={() => { setMode("register"); setError(""); setMessage(""); }} className="min-h-10 rounded-lg px-1 font-medium text-primary-800 underline underline-offset-2">Crear cuenta</button>}
+          {mode !== "login" && <button type="button" onClick={() => { setMode("login"); setError(""); setMessage(""); }} className="min-h-10 rounded-lg px-1 font-medium text-primary-800 underline underline-offset-2">Volver a iniciar sesión</button>}
         </div>
-        {mode === "register" && <p className="mt-4 text-center text-xs text-surface-500">El registro está disponible con tu correo.</p>}
-      </div>
-      <Link to="/" className="text-sm text-surface-600">Continuar explorando</Link>
+        <Link to="/" className="mt-5 inline-flex min-h-10 items-center gap-2 rounded-lg text-sm font-medium text-surface-600 hover:text-surface-900"><Icon name="ArrowLeft" size={16} />Continuar explorando</Link>
+      </section>
     </div>
   );
 };

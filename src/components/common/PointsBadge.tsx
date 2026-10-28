@@ -22,16 +22,16 @@ export const PointsBadge: FC<PointsBadgeProps> = ({ points, size = "md", variant
 
   if (variant === "badge") {
     return (
-      <span className="inline-flex items-center gap-0.5 rounded-full bg-gold-400 px-1.5 py-0.5 font-bold text-white">
-        <Icon name="Award" size={iconSizes[size]} color="#FFFFFF" />
+      <span className="inline-flex items-center gap-0.5 rounded-full bg-primary-800 px-1.5 py-0.5 font-bold text-white">
+        <Icon name="Award" size={iconSizes[size]}  />
         <span className={`${sizeClasses[size]}`}>{points}</span>
       </span>
     );
   }
 
   return (
-    <span className="inline-flex items-center gap-0.5 rounded-full bg-gold-50 px-1.5 py-0.5 font-medium text-gold-700">
-      <Icon name="Award" size={iconSizes[size]} color="#F59E1B" />
+    <span className="inline-flex items-center gap-0.5 rounded-full bg-primary-50 px-1.5 py-0.5 font-medium text-primary-900">
+      <Icon name="Award" size={iconSizes[size]}  />
       <span className={sizeClasses[size]}>+{points} pts</span>
     </span>
   );

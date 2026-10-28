@@ -7,12 +7,12 @@ export const Welcome: FC = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-6 px-4 py-8">
+    <div className="mx-auto flex min-h-screen max-w-2xl flex-col items-center justify-center gap-6 px-4 py-8 sm:px-8">
       <div className="mb-2">
         <div className="flex h-24 w-24 items-center justify-center rounded-full bg-primary-100">
           <div className="relative">
-            <div className="h-12 w-12 animate-bounce rounded-full bg-primary-600" />
-            <Icon name="PartyPopper" size={24} className="absolute -top-2 -right-2 text-gold-400" />
+            <div className="h-12 w-12 rounded-full bg-primary-700" />
+            <Icon name="PartyPopper" size={24} className="absolute -top-2 -right-2 text-surface-800" />
           </div>
         </div>
       </div>
@@ -24,7 +24,7 @@ export const Welcome: FC = () => {
         </p>
       </div>
 
-      <p className="text-center text-sm text-surface-600">
+      <p className="max-w-lg text-center text-sm leading-6 text-surface-600">
         Tu cuenta está lista. Ya puedes explorar los productos publicados en REYVENS.
       </p>
 
@@ -38,6 +38,7 @@ export const Welcome: FC = () => {
         variant="primary"
         fullWidth
         size="lg"
+        className="max-w-sm"
         rightIcon="MapPin"
         onClick={() => navigate("/")}
       >

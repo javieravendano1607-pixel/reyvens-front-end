@@ -1,8 +1,23 @@
 import { FC } from "react";
-import * as LucideIcons from "lucide-react";
-import type { ComponentType } from "react";
+import {
+  AlertCircle, ArrowLeft, ArrowRight, ArrowUp, Award, Check, CheckCircle,
+  CheckCircle2, ChevronLeft, ChevronRight, CircleCheck, CircleX, Clock3,
+  CreditCard, Crown, Gift, Heart, History, Home, ImageOff, Info, LayoutGrid,
+  LockKeyhole, LogOut, Mail, MapPin, Medal, Minus, PartyPopper, Plus,
+  RefreshCw, Search, ShieldCheck, ShoppingBag, ShoppingCart, Star, Trash2,
+  Wallet, Wifi, WifiOff, X, XCircle,
+} from "lucide-react";
 
-export type IconName = keyof typeof LucideIcons;
+const iconMap = {
+  AlertCircle, ArrowLeft, ArrowRight, ArrowUp, Award, Check, CheckCircle,
+  CheckCircle2, ChevronLeft, ChevronRight, CircleCheck, CircleX, Clock3,
+  CreditCard, Crown, Gift, Heart, History, Home, ImageOff, Info, LayoutGrid,
+  LockKeyhole, LogOut, Mail, MapPin, Medal, Minus, PartyPopper, Plus,
+  RefreshCw, Search, ShieldCheck, ShoppingBag, ShoppingCart, Star, Trash2,
+  Wallet, Wifi, WifiOff, X, XCircle,
+};
+
+export type IconName = keyof typeof iconMap;
 
 interface IconProps {
   name: string;
@@ -13,17 +28,8 @@ interface IconProps {
   onClick?: () => void;
 }
 
-type LucideIconComponent = ComponentType<{
-  size?: number;
-  color?: string;
-  strokeWidth?: number;
-  className?: string;
-  onClick?: () => void;
-}>;
-
 export const Icon: FC<IconProps> = ({ name, size = 20, color, className = "", strokeWidth, onClick }) => {
-  const AllIcons = LucideIcons as unknown as Record<string, LucideIconComponent>;
-  const IconComp = AllIcons[name];
+  const IconComp = iconMap[name as IconName];
 
   if (!IconComp) {
     return null;

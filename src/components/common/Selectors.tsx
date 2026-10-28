@@ -13,6 +13,8 @@ export const SizeSelector: FC<SizeSelectorProps> = ({ sizes, selected, onChange 
       {sizes.map((size) => (
         <button
           key={size}
+          type="button"
+          aria-pressed={selected === size}
           onClick={() => onChange(size)}
           className={`h-10 w-10 rounded-lg border-2 font-medium transition-all duration-200 ${
             selected === size
@@ -39,6 +41,9 @@ export const ColorSelector: FC<ColorSelectorProps> = ({ colors, selected, onChan
       {colors.map((color) => (
         <button
           key={color.name}
+          type="button"
+          aria-label={color.name}
+          aria-pressed={selected === color.hex}
           onClick={() => onChange(color.hex)}
           className={`relative h-10 w-10 rounded-full border-2 transition-all duration-200 ${
             selected === color.hex ? "border-surface-800 ring-2 ring-surface-400" : "border-surface-300"
@@ -63,19 +68,23 @@ interface QuantitySelectorProps {
 
 export const QuantitySelector: FC<QuantitySelectorProps> = ({ quantity, max = 99, onChange }) => {
   return (
-    <div className="flex items-center gap-0.5">
+    <div className="flex items-center gap-1" role="group" aria-label="Cantidad">
       <button
+        type="button"
         onClick={() => onChange(Math.max(1, quantity - 1))}
         disabled={quantity <= 1}
-        className="flex h-8 w-8 items-center justify-center rounded-lg border border-surface-300 bg-surface-50 text-surface-700 disabled:opacity-40"
+        aria-label="Reducir cantidad"
+        className="flex h-11 w-11 items-center justify-center rounded-xl border border-surface-300 bg-white text-surface-800 transition-colors hover:bg-surface-50 disabled:cursor-not-allowed disabled:opacity-40"
       >
         <Icon name="Minus" size={16} />
       </button>
-      <span className="w-8 text-center text-sm font-medium">{quantity}</span>
+      <span className="w-9 text-center text-sm font-semibold" aria-live="polite">{quantity}</span>
       <button
+        type="button"
         onClick={() => onChange(Math.min(max, quantity + 1))}
         disabled={quantity >= max}
-        className="flex h-8 w-8 items-center justify-center rounded-lg border border-surface-300 bg-surface-50 text-surface-700 disabled:opacity-40"
+        aria-label="Aumentar cantidad"
+        className="flex h-11 w-11 items-center justify-center rounded-xl border border-surface-300 bg-white text-surface-800 transition-colors hover:bg-surface-50 disabled:cursor-not-allowed disabled:opacity-40"
       >
         <Icon name="Plus" size={16} />
       </button>

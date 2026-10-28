@@ -24,6 +24,7 @@ export interface StoreInfo {
 export interface Product {
   id: string;
   slug?: string;
+  categoryId?: string;
   name: string;
   description: string;
   price: number;

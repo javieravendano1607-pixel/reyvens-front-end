@@ -34,19 +34,19 @@ export const Button: FC<ButtonProps> = ({
   className = "",
   type = "button",
 }) => {
-  const base = "flex items-center justify-center gap-2 rounded-xl font-semibold transition-all duration-200 focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed";
+  const base = "flex min-h-11 items-center justify-center gap-2 rounded-xl font-semibold transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-50 disabled:cursor-not-allowed";
 
   const variants = {
-    primary: "bg-primary-600 hover:bg-primary-700 text-white shadow-md hover:shadow-lg active:scale-95 focus:ring-primary-500",
-    outline: "border-2 border-primary-600 bg-transparent text-primary-600 hover:bg-primary-50 active:scale-95 focus:ring-primary-500",
-    ghost: "bg-transparent text-surface-600 hover:bg-surface-100 active:scale-95 focus:ring-surface-400",
-    gold: "bg-gold-400 hover:bg-gold-500 text-white shadow-md hover:shadow-lg active:scale-95 focus:ring-gold-400",
+    primary: "bg-primary-700 text-white shadow-sm hover:bg-primary-800 active:bg-primary-900 focus-visible:outline-primary-700",
+    outline: "border border-primary-700 bg-transparent text-primary-800 hover:bg-primary-50 active:bg-primary-100 focus-visible:outline-primary-700",
+    ghost: "bg-transparent text-surface-700 hover:bg-surface-100 active:bg-surface-200 focus-visible:outline-surface-700",
+    gold: "bg-primary-700 text-white shadow-sm hover:bg-primary-800 active:bg-primary-900 focus-visible:outline-primary-700",
   };
 
   const sizes = {
-    sm: "h-8 px-3 text-xs",
-    md: "h-10 px-4 py-2 text-sm",
-    lg: "h-12 px-6 text-base",
+  sm: "min-h-10 px-3 text-xs",
+  md: "min-h-11 px-4 py-2 text-sm",
+  lg: "min-h-12 px-6 text-base",
   };
 
   const iconSize = size === "sm" ? 14 : size === "lg" ? 20 : 16;
@@ -69,11 +69,12 @@ export const Button: FC<ButtonProps> = ({
 interface IconButtonProps {
   icon: string | ReactNode;
   onClick?: () => void;
-  label?: string;
+  label: string;
   variant?: "ghost" | "primary" | "outline";
   size?: "sm" | "md" | "lg";
   badge?: number;
   className?: string;
+  disabled?: boolean;
 }
 
 export const IconButton: FC<IconButtonProps> = ({
@@ -84,10 +85,11 @@ export const IconButton: FC<IconButtonProps> = ({
   size = "md",
   badge,
   className = "",
+  disabled = false,
 }) => {
   const sizeClasses = {
-    sm: "h-8 w-8",
-    md: "h-10 w-10",
+    sm: "h-10 w-10",
+    md: "h-11 w-11",
     lg: "h-12 w-12",
   };
 
@@ -99,7 +101,7 @@ export const IconButton: FC<IconButtonProps> = ({
 
   const variantClasses = {
     ghost: "bg-transparent text-surface-600 hover:bg-surface-100",
-    primary: "bg-primary-600 text-white hover:bg-primary-700",
+    primary: "bg-primary-700 text-white hover:bg-primary-800",
     outline: "border border-surface-300 bg-transparent text-surface-700 hover:bg-surface-100",
   };
 
@@ -107,8 +109,10 @@ export const IconButton: FC<IconButtonProps> = ({
 
   return (
     <button
+      type="button"
       onClick={onClick}
-      className={`relative flex items-center justify-center rounded-xl transition-all duration-200 active:scale-95 ${sizeClasses[size]} ${variantClasses[variant]} ${className}`}
+      disabled={disabled}
+      className={`relative flex items-center justify-center rounded-xl transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-700 disabled:cursor-not-allowed disabled:opacity-50 ${sizeClasses[size]} ${variantClasses[variant]} ${className}`}
       aria-label={label}
     >
       {iconNode}

@@ -72,12 +72,12 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const { isAuthenticated, isLoading: authLoading } = useAuth();
   const [items, setItems] = useState<CartItem[]>([]);
   const [subtotal, setSubtotal] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [isMutating, setIsMutating] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const refresh = useCallback(async () => {
-    if (!isAuthenticated) { setItems([]); setSubtotal(0); return; }
+    if (!isAuthenticated) { setItems([]); setSubtotal(0); setIsLoading(false); return; }
     setError(null);
     setIsLoading(true);
     try { const cart = await commerceApi.cart(); setItems(mapCart(cart)); setSubtotal(Number(cart.subtotal)); }
@@ -87,7 +87,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (authLoading) return;
-    if (!isAuthenticated) { setItems([]); setSubtotal(0); setError(null); return; }
+    if (!isAuthenticated) { setItems([]); setSubtotal(0); setError(null); setIsLoading(false); return; }
     void refresh().catch(() => undefined);
   }, [authLoading, isAuthenticated, refresh]);
 
