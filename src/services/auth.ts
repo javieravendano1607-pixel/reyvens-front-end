@@ -19,6 +19,11 @@ export interface GoogleLinkStatus {
   linked: boolean;
 }
 
+export interface UpdateProfileInput {
+  name?: string;
+  phone?: string | null;
+}
+
 export const authApi = {
   async googleLoginEnabled(): Promise<boolean> {
     const result = await api.get<{ enabled: boolean }>("/auth/google/status");
@@ -50,6 +55,10 @@ export const authApi = {
     const tokens = await api.post<{ accessToken: string }>("/auth/refresh", {});
     setAccessToken(tokens.accessToken);
     const result = await api.get<{ user: ApiUser }>("/auth/me");
+    return result.user;
+  },
+  async updateProfile(input: UpdateProfileInput): Promise<ApiUser> {
+    const result = await api.patch<{ user: ApiUser }>("/auth/me", input);
     return result.user;
   },
   async logout(): Promise<void> {

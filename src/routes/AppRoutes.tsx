@@ -18,6 +18,8 @@ import { Location } from "../pages/auth/Location";
 import { GoogleLoginCallback } from "../pages/auth/GoogleLoginCallback";
 import { AccountSecurity } from "../pages/account/AccountSecurity";
 import { AccountHome } from "../pages/account/AccountHome";
+import { AccountProfile } from "../pages/account/AccountProfile";
+import { AccountFavorites } from "../pages/account/AccountFavorites";
 import type { ReactNode } from "react";
 import { SessionSkeleton } from "../components/common/LoadingPatterns";
 
@@ -58,6 +60,8 @@ export function AppRoutes() {
       <Route path="/receipt/:id" element={protectedPage(<Receipt />)} />
       <Route path="/wallet" element={protectedPage(<Wallet />)} />
       <Route path="/account" element={protectedPage(<AccountHome />)} />
+      <Route path="/account/profile" element={protectedPage(<AccountProfile />)} />
+      <Route path="/account/favorites" element={protectedPage(<AccountFavorites />)} />
       <Route path="/account/security" element={protectedPage(<AccountSecurity />)} />
       <Route path="/search" element={<Search />} />
       <Route path="*" element={<Navigate to="/" replace />} />

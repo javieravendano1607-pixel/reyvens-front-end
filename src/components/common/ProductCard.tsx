@@ -5,6 +5,7 @@ import type { Product } from "../../data/types";
 import { getDemoProduct } from "../../data/demo/catalog";
 import { isDemoMode, isDemoProductId } from "../../data/demo/demoMode";
 import { AsyncImage } from "./AsyncImage";
+import { FavoriteButton } from "./FavoriteButton";
 
 interface ProductCardProps { product: Product; }
 
@@ -14,6 +15,7 @@ export const ProductCard: FC<ProductCardProps> = ({ product }) => {
   const usesIllustration = !image || image.endsWith("/icons/icon-512.svg");
   const hasStoreName = product.store.name !== "Tienda local";
   return (
+    <div className="relative min-w-0">
     <Link to={`/product/${product.slug || product.id}`} className={`product-card group flex min-w-0 flex-col overflow-hidden bg-white transition-[transform,box-shadow] duration-300 hover:-translate-y-1 hover:shadow-[0_18px_44px_-34px_rgba(18,18,18,.55)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-700 motion-reduce:transform-none${demoProduct ? " product-card--demo" : ""}`}>
       <div className={`product-card__visual relative aspect-[.88/1] overflow-hidden bg-surface-100${demoProduct ? ` product-card__visual--${demoProduct.categoryId.replace("demo-category-", "")}` : ""}`}>
         {usesIllustration && !demoProduct ? <span role="img" aria-label="Fotografía del producto no disponible" className="flex h-full w-full flex-col items-center justify-center gap-2 text-surface-400"><Icon name="ImageOff" size={24} /><span className="text-[10px] font-medium">Fotografía no disponible</span></span> : <AsyncImage src={image} alt={product.name} {...(!demoProduct ? { fallbackSrc: "" } : {})} className="h-full w-full" imageClassName={`transition-transform duration-500 group-hover:scale-[1.045] motion-reduce:transform-none${demoProduct ? " product-card__image--demo" : ""}`} />}
@@ -37,6 +39,8 @@ export const ProductCard: FC<ProductCardProps> = ({ product }) => {
         </div>
       </div>
     </Link>
+    <FavoriteButton productId={product.id} productName={product.name} disabled={Boolean(demoProduct)} className="absolute right-2 top-2 z-10 flex h-10 w-10 items-center justify-center rounded-full border border-surface-200 bg-white/95 text-surface-700 shadow-sm transition-colors hover:border-primary-200 hover:text-primary-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-700 disabled:cursor-not-allowed disabled:opacity-50" />
+    </div>
   );
 };
 

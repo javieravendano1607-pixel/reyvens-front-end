@@ -13,6 +13,7 @@ import { getDemoProduct } from "../../data/demo/catalog";
 import { isDemoMode, isDemoProductId } from "../../data/demo/demoMode";
 import { ProductDetailSkeleton } from "../../components/common/LoadingPatterns";
 import { AsyncImage } from "../../components/common/AsyncImage";
+import { FavoriteButton } from "../../components/common/FavoriteButton";
 
 export const ProductDetail: FC = () => {
   const { id = "" } = useParams<{ id: string }>();
@@ -73,7 +74,7 @@ export const ProductDetail: FC = () => {
         <div className="flex aspect-square max-h-[680px] snap-x snap-mandatory overflow-x-auto">
           {product.images.length && product.images.some(image => image && !image.endsWith("/icons/icon-512.svg")) ? product.images.filter(image => image && !image.endsWith("/icons/icon-512.svg")).map((image, index) => <AsyncImage key={`${image}-${index}`} src={image} {...(!isDemoProduct ? { fallbackSrc: "" } : {})} alt={`${product.name}${product.images.length > 1 ? `, imagen ${index + 1}` : ""}`} className="h-full w-full flex-none snap-center" imageClassName="object-cover" />) : <div role="img" aria-label="Fotografía del producto no disponible" className="flex h-full w-full flex-col items-center justify-center gap-3 text-surface-400"><Icon name="ImageOff" size={32} /><span className="text-sm">Fotografía no disponible</span></div>}
         </div>
-        <button type="button" disabled title="Favoritos no disponible" aria-label="Favoritos no disponible" className="icon-control absolute right-3 top-3 bg-white/95 text-surface-400 disabled:cursor-not-allowed"><Icon name="Heart" size={19} /></button>
+        <FavoriteButton productId={product.id} productName={product.name} disabled={isDemoProduct} className="icon-control absolute right-3 top-3 z-10 bg-white/95 text-surface-700" />
       </div>
 
       <section className="demo-product-info min-w-0 lg:sticky lg:top-28 lg:self-start">

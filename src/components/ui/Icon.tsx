@@ -1,6 +1,6 @@
 import { FC } from "react";
 import {
-  AlertCircle, ArrowLeft, ArrowRight, ArrowUp, Award, Bell, Check, CheckCircle,
+  AlertCircle, ArrowLeft, ArrowRight, ArrowUp, Award, Bell, Camera, Check, CheckCircle,
   CheckCircle2, ChevronLeft, ChevronRight, CircleCheck, CircleX, Clock3,
   CreditCard, Crown, Gift, Heart, History, Home, ImageOff, Info, LayoutGrid,
   LockKeyhole, LogOut, Mail, MapPin, Medal, Minus, PartyPopper, Plus,
@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 
 const iconMap = {
-  AlertCircle, ArrowLeft, ArrowRight, ArrowUp, Award, Bell, Check, CheckCircle,
+  AlertCircle, ArrowLeft, ArrowRight, ArrowUp, Award, Bell, Camera, Check, CheckCircle,
   CheckCircle2, ChevronLeft, ChevronRight, CircleCheck, CircleX, Clock3,
   CreditCard, Crown, Gift, Heart, History, Home, ImageOff, Info, LayoutGrid,
   LockKeyhole, LogOut, Mail, MapPin, Medal, Minus, PartyPopper, Plus,

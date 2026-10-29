@@ -5,14 +5,17 @@ import App from "./App";
 import "./index.css";
 import { CartProvider } from "./contexts/CartContext";
 import { AuthProvider } from "./contexts/AuthContext";
+import { FavoritesProvider } from "./contexts/FavoritesContext";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <BrowserRouter>
       <AuthProvider>
-        <CartProvider>
-          <App />
-        </CartProvider>
+        <FavoritesProvider>
+          <CartProvider>
+            <App />
+          </CartProvider>
+        </FavoritesProvider>
       </AuthProvider>
     </BrowserRouter>
   </React.StrictMode>
