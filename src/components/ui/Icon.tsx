@@ -1,20 +1,20 @@
 import { FC } from "react";
 import {
-  AlertCircle, ArrowLeft, ArrowRight, ArrowUp, Award, Check, CheckCircle,
+  AlertCircle, ArrowLeft, ArrowRight, ArrowUp, Award, Bell, Check, CheckCircle,
   CheckCircle2, ChevronLeft, ChevronRight, CircleCheck, CircleX, Clock3,
   CreditCard, Crown, Gift, Heart, History, Home, ImageOff, Info, LayoutGrid,
   LockKeyhole, LogOut, Mail, MapPin, Medal, Minus, PartyPopper, Plus,
   RefreshCw, Search, ShieldCheck, ShoppingBag, ShoppingCart, Star, Trash2,
-  Wallet, Wifi, WifiOff, X, XCircle,
+  UserRound, Store, Wallet, Wifi, WifiOff, X, XCircle,
 } from "lucide-react";
 
 const iconMap = {
-  AlertCircle, ArrowLeft, ArrowRight, ArrowUp, Award, Check, CheckCircle,
+  AlertCircle, ArrowLeft, ArrowRight, ArrowUp, Award, Bell, Check, CheckCircle,
   CheckCircle2, ChevronLeft, ChevronRight, CircleCheck, CircleX, Clock3,
   CreditCard, Crown, Gift, Heart, History, Home, ImageOff, Info, LayoutGrid,
   LockKeyhole, LogOut, Mail, MapPin, Medal, Minus, PartyPopper, Plus,
   RefreshCw, Search, ShieldCheck, ShoppingBag, ShoppingCart, Star, Trash2,
-  Wallet, Wifi, WifiOff, X, XCircle,
+  UserRound, Store, Wallet, Wifi, WifiOff, X, XCircle,
 };
 
 export type IconName = keyof typeof iconMap;

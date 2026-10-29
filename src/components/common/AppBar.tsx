@@ -42,7 +42,7 @@ export const AppBar: FC<AppBarProps> = ({ title, showSearch = true, showWallet =
           <NavLink to="/categories" className={desktopLink}>Catálogo</NavLink>
           <NavLink to="/rewards" className={desktopLink}>Recompensas</NavLink>
           {user && <NavLink to="/history" className={desktopLink}>Mis pedidos</NavLink>}
-          {user && <NavLink to="/account/security" className={desktopLink}>Cuenta</NavLink>}
+          {user && <NavLink to="/account" className={desktopLink}>Mi cuenta</NavLink>}
         </nav>
 
         <div className="ml-auto flex shrink-0 items-center gap-1 sm:gap-2">
@@ -52,14 +52,14 @@ export const AppBar: FC<AppBarProps> = ({ title, showSearch = true, showWallet =
             {count > 0 && <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-primary-700 px-1 text-[10px] font-bold text-white">{count > 99 ? "99+" : count}</span>}
           </Link>
           {user ? <>
-            <Link to="/account/security" title={user.name} aria-label={`Seguridad de la cuenta de ${user.name}`} className="flex h-10 min-w-10 items-center justify-center rounded-full bg-surface-900 px-2 text-xs font-bold text-white">{initials}</Link>
+            <Link to="/account" title="Mi cuenta" aria-label={`Mi cuenta de ${user.name}`} className="flex h-10 min-w-10 items-center justify-center rounded-full bg-surface-900 px-2 text-xs font-bold text-white transition-colors hover:bg-primary-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-700">{initials}</Link>
             <button type="button" onClick={() => void logout().catch(() => undefined)} disabled={isLoading} className="icon-control hidden sm:flex" aria-label="Cerrar sesión" title="Cerrar sesión"><Icon name="LogOut" size={18} /></button>
           </> : <Link to="/login" className="hidden min-h-10 items-center rounded-xl bg-primary-700 px-4 text-sm font-semibold text-white transition-colors hover:bg-primary-800 sm:flex">Ingresar</Link>}
         </div>
       </div>
       {user && <div className="page-container flex items-center justify-between gap-3 pb-2 sm:hidden">
         <nav aria-label="Cuenta" className="flex min-w-0 gap-3 overflow-x-auto text-xs font-medium">
-          <Link className="whitespace-nowrap text-surface-700" to="/account/security">Cuenta</Link>
+          <Link className="whitespace-nowrap text-surface-700" to="/account">Mi cuenta</Link>
           <Link className="whitespace-nowrap text-surface-700" to="/history">Mis pedidos</Link>
         </nav>
         <button type="button" onClick={() => void logout().catch(() => undefined)} disabled={isLoading} className="min-h-9 shrink-0 rounded-lg px-2 py-1 text-xs font-medium text-surface-600 hover:bg-surface-100 disabled:opacity-50">Cerrar sesión</button>
