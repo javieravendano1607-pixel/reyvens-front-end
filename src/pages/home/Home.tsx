@@ -57,9 +57,19 @@ export const Home: FC = () => {
     }
 
     const controller = new AbortController();
-    setDiscoveryImages({});
+    // Use images from the product list first (API now returns images). Fallback to detail fetch only if missing.
+    const initial: Record<string, string> = {};
+    const toFetch: typeof discoverySelection.products = [];
+    for (const product of discoverySelection.products) {
+      const img = product.images?.find((url) => url && !url.endsWith("/icons/icon-512.svg"));
+      if (img) initial[product.id] = img;
+      else toFetch.push(product);
+    }
+    setDiscoveryImages(initial);
+    if (toFetch.length === 0) { setDiscoveryImagesLoading(false); return; }
+
     setDiscoveryImagesLoading(true);
-    void Promise.all(discoverySelection.products.map(async product => {
+    void Promise.all(toFetch.map(async product => {
       try {
         const detail = await marketplaceApi.product(product.slug || product.id, controller.signal);
         const image = detail.images.find(url => url && !url.endsWith("/icons/icon-512.svg"));
@@ -69,7 +79,7 @@ export const Home: FC = () => {
       }
     })).then(results => {
       if (controller.signal.aborted) return;
-      setDiscoveryImages(Object.fromEntries(results.filter((entry): entry is readonly [string, string] => entry !== null)));
+      setDiscoveryImages(prev => ({ ...prev, ...Object.fromEntries(results.filter((entry): entry is readonly [string, string] => entry !== null)) }));
       setDiscoveryImagesLoading(false);
     });
     return () => controller.abort();

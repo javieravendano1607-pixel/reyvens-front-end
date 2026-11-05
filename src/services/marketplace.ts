@@ -1,5 +1,6 @@
 import { api } from "./api";
 import type { CategoryItem, Product, StoreInfo } from "../data/types";
+import { getProductImageUrls, pickProductImageUrl } from "../utils/productImages";
 
 interface ProductDto {
   id: string;
@@ -13,9 +14,10 @@ interface ProductDto {
   status: string;
   inventory_tracking_enabled: boolean;
   stock_quantity: number;
+  images?: ImageDto[];
 }
 
-interface ImageDto { url: string; alt_text?: string | null; }
+interface ImageDto { url: string; alt_text?: string | null; is_primary?: boolean | number; sort_order?: number; }
 interface VariantDto {
   id: string;
   sku: string;
@@ -54,6 +56,7 @@ const fallbackImage = "/icons/icon-512.svg";
 function productFromSummary(dto: ProductDto): Product {
   const price = Number(dto.base_price);
   const originalPrice = dto.compare_at_price ? Number(dto.compare_at_price) : undefined;
+  const images = getProductImageUrls(dto.images);
   return {
     id: dto.id,
     slug: dto.slug,
@@ -65,7 +68,7 @@ function productFromSummary(dto: ProductDto): Product {
     discount: originalPrice && originalPrice > price ? Math.round((1 - price / originalPrice) * 100) : undefined,
     currency: "COP",
     store: { id: dto.store_id, name: "Tienda local", slug: "", logo: fallbackImage },
-    images: [fallbackImage],
+    images,
     sizes: [],
     colors: [],
     stock: dto.inventory_tracking_enabled ? dto.stock_quantity : null,
@@ -100,11 +103,12 @@ export const marketplaceApi = {
 
   async product(slug: string, signal?: AbortSignal): Promise<Product> {
     const detail = await api.get<ProductDetailDto>(`/products/${encodeURIComponent(slug)}`, signal);
-    const images = detail.product.images.map(image => image.url).filter(Boolean);
+    const images = getProductImageUrls(detail.product.images);
     const activeVariants = detail.variants.filter(variant => variant.status === "active");
     const trackedStocks = activeVariants
       .filter(variant => variant.inventory_tracking_enabled)
       .map(variant => variant.stock_quantity);
+    const primaryImage = pickProductImageUrl(detail.product.images);
     return {
       id: detail.product.id,
       slug: detail.product.slug,
@@ -117,7 +121,7 @@ export const marketplaceApi = {
         : undefined,
       currency: "COP",
       store: { id: "", name: "Tienda local", slug: "", logo: fallbackImage },
-      images: images.length ? images : [fallbackImage],
+      images: images.length ? images : (primaryImage ? [primaryImage] : [fallbackImage]),
       stock: trackedStocks.length ? Math.max(...trackedStocks) : null,
       inventoryTrackingEnabled: detail.product.inventoryTrackingEnabled,
       variants: activeVariants,
