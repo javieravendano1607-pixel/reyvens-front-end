@@ -175,7 +175,7 @@
   }
 
   .product-card {
-    border: 1px solid transparent;
+    border: 1px solid rgb(229 231 235);
   }
 
   .product-card:hover {

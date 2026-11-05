@@ -15,6 +15,9 @@ interface ProductDto {
   inventory_tracking_enabled: boolean;
   stock_quantity: number;
   images?: ImageDto[];
+  store_name?: string;
+  storeName?: string;
+  store?: { id?: string; name?: string; commercial_name?: string; commercialName?: string; slug?: string; logo?: string; logoUrl?: string | null };
 }
 
 interface ImageDto { url: string; alt_text?: string | null; is_primary?: boolean | number; sort_order?: number; }
@@ -57,6 +60,9 @@ function productFromSummary(dto: ProductDto): Product {
   const price = Number(dto.base_price);
   const originalPrice = dto.compare_at_price ? Number(dto.compare_at_price) : undefined;
   const images = getProductImageUrls(dto.images);
+  const storeName = dto.store?.commercial_name ?? dto.store?.commercialName ?? dto.store?.name ?? dto.store_name ?? dto.storeName ?? "Tienda local";
+  const storeSlug = dto.store?.slug ?? "";
+  const storeLogo = (dto.store?.logoUrl ?? dto.store?.logo) || fallbackImage;
   return {
     id: dto.id,
     slug: dto.slug,
@@ -67,7 +73,7 @@ function productFromSummary(dto: ProductDto): Product {
     originalPrice,
     discount: originalPrice && originalPrice > price ? Math.round((1 - price / originalPrice) * 100) : undefined,
     currency: "COP",
-    store: { id: dto.store_id, name: "Tienda local", slug: "", logo: fallbackImage },
+    store: { id: dto.store_id, name: storeName, slug: storeSlug, logo: storeLogo },
     images,
     sizes: [],
     colors: [],
